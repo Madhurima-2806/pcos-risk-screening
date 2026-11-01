@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your little wellness space</title>
+<style>
+:root { --bg:#fdf2f6; --card:#fff; --ink:#2a2a2a; --mauve:#8a5a78; --btn:#b87b99; --soft:#f6e3ee; --line:#ecd9e3; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif; line-height:1.45; }
+.wrap { max-width:440px; margin:0 auto; padding:16px; }
+.card { background:var(--card); border-radius:22px; padding:22px; box-shadow:0 2px 14px rgba(138,90,120,.12); }
+.eyebrow { color:#b0749a; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; }
+h1,h2 { color:var(--mauve); line-height:1.15; margin:.3em 0 .5em; }
+h1 { font-size:2rem; } h2 { font-size:1.45rem; }
+.rosie { display:flex; gap:14px; align-items:center; background:var(--soft); border-radius:18px; padding:14px; margin:16px 0; }
+.rosie img { width:84px; height:84px; border-radius:16px; background:#fff; flex:none; }
+.rosie b { display:block; margin-bottom:2px; }
+.btn { display:block; width:100%; border:0; border-radius:999px; background:var(--btn); color:#fff; font-size:1.05rem; padding:15px; cursor:pointer; }
+.btn.alt { background:#fff; color:var(--mauve); border:1.5px solid var(--btn); margin-top:10px; }
+.btn.dark { background:#111; width:auto; padding:11px 24px; font-size:.95rem; }
+.btn.light { background:#fff; color:#333; border:1px solid #ccc; width:auto; padding:11px 22px; font-size:.95rem; }
+.small { color:#9a7a8c; font-size:.85rem; text-align:center; margin:12px 0 0; }
+.bar { height:8px; background:var(--soft); border-radius:9px; margin:10px 0 18px; overflow:hidden; }
+.bar i { display:block; height:100%; background:var(--btn); width:0; transition:width .3s; }
+.top { display:flex; justify-content:space-between; color:var(--mauve); font-size:.8rem; letter-spacing:.05em; text-transform:uppercase; }
+.opt { display:flex; align-items:center; gap:12px; padding:13px 14px; border:1.5px solid var(--line); border-radius:14px; margin:9px 0; cursor:pointer; font-size:1.02rem; }
+.opt.on { border-color:var(--btn); background:#fbeaf2; }
+.opt span { width:20px; height:20px; border-radius:50%; border:2px solid #cdb3c3; flex:none; }
+.opt.on span { background:var(--btn); border-color:var(--btn); }
+input[type=number], input[type=text] { width:100%; font-size:1.05rem; padding:13px 14px; border:1.5px solid var(--line); border-radius:14px; }
+.say { background:var(--soft); color:var(--mauve); border-radius:14px; padding:13px; margin:16px 0; font-size:.95rem; }
+.nav { display:flex; justify-content:space-between; margin-top:6px; }
+.err { color:#b03a5b; font-size:.9rem; min-height:1.2em; margin:6px 0 0; }
+.tag { display:inline-block; font-size:.78rem; border-radius:999px; padding:2px 12px; margin-bottom:6px; }
+.low .tag { background:#d9f2e3; color:#1f7a47; } .mid .tag { background:#ffe6d2; color:#b4571a; } .high .tag { background:#ffd9df; color:#b3243f; }
+.res h2 { font-size:1.35rem; } .res p { margin:.4em 0 1em; }
+.grp { border:1px solid var(--line); border-radius:16px; padding:6px 14px; margin:10px 0; }
+.grp h3 { margin:8px 0 2px; font-size:1rem; }
+.row { display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid #f3e6ed; color:#7c6a75; }
+.row:first-of-type { border-top:0; } .row b { color:#222; }
+.note { background:var(--soft); border-radius:16px; padding:14px; margin:14px 0; color:#4a3a45; }
+.note b.t { color:var(--mauve); display:block; margin-bottom:4px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+.tile { border:1px solid var(--line); border-radius:16px; padding:12px; font-size:.88rem; color:#7c6a75; }
+.tile .em { font-size:1.7rem; } .tile h4 { margin:4px 0; color:#222; font-size:1rem; }
+.tile a { display:block; color:var(--mauve); margin-top:5px; font-size:.86rem; }
+.todo li { display:flex; gap:8px; align-items:center; padding:5px 0; list-style:none; }
+.todo ul { padding:0; margin:8px 0; } .todo li.done span { text-decoration:line-through; color:#aaa; }
+.todo li button { margin-left:auto; border:0; background:none; color:#b0749a; cursor:pointer; font-size:1rem; }
+.disc { background:#fbe6ef; border-radius:20px; padding:16px; margin:16px 0; }
+.disc .head { display:flex; gap:12px; align-items:center; margin-bottom:8px; }
+.disc img { width:64px; height:64px; border-radius:14px; background:#fff; }
+.disc .in { background:#fff; border-radius:16px; padding:14px; font-size:.93rem; }
+.disc strong { color:var(--mauve); }
+.link { background:none; border:0; color:var(--mauve); text-decoration:underline; cursor:pointer; font-size:.9rem; margin-top:10px; }
+[hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- WELCOME -->
+<div class="card" id="s-welcome">
+  <div class="eyebrow">&#9825; A little space for women's wellness</div>
+  <h1>Your body, your story, your journey.</h1>
+  <p>"Understanding your body starts with listening to it. Take a little moment for yourself and explore the symptoms you may have been experiencing."</p>
+  <div class="rosie"><img src="/static/rosie.png" alt="Rosie" onerror="this.style.visibility='hidden'">
+    <div><b>Hey, lovely! I'm Rosie &#9825;</b>"I'll be your little companion while we learn more about your health. Ready to begin?"</div></div>
+  <button class="btn" onclick="startQuiz()">Start your little check-in &#9825;</button>
+  <p class="small">A gentle step towards understanding your body.</p>
+</div>
+
+<!-- QUESTIONS -->
+<div class="card" id="s-ask" hidden>
+  <div class="top"><span>Your little check-in &#9825;</span><span id="count"></span></div>
+  <div class="bar"><i id="fill"></i></div>
+  <h2 id="qtitle"></h2>
+  <div id="qbody"></div>
+  <div class="err" id="err"></div>
+  <div class="say" id="say"></div>
+  <div class="nav"><button class="btn light" onclick="prev()">&larr; Previous</button><button class="btn dark" id="nextbtn" onclick="next()">Next &rarr;</button></div>
+</div>
+
+<!-- RESULT -->
+<div class="card res" id="s-result" hidden>
+  <div class="eyebrow">Your screening result</div>
+  <div id="resbox" style="margin-top:10px"></div>
+  <button class="btn" onclick="show('s-journal')">View My Symptom Overview</button>
+  <button class="btn alt" onclick="show('s-learn')">Learn More About PCOS</button>
+  <div id="disc1"></div>
+  <button class="link" onclick="startQuiz()">Start over</button>
+</div>
+
+<!-- JOURNAL -->
+<div class="card" id="s-journal" hidden>
+  <h2>Your little health journal &#9825;</h2>
+  <p class="small" style="text-align:left;margin:0 0 8px">A summary of the answers you shared with us.</p>
+  <div id="jbody"></div>
+  <div class="note"><b class="t">A little reminder &#9825;</b>These are your self-reported responses, not medical findings. They help organize the information you may wish to discuss with a healthcare professional.</div>
+  <button class="btn alt" onclick="show('s-result')">&larr; Back to my result</button>
+  <button class="btn alt" onclick="show('s-learn')">Explore my wellness corner</button>
+</div>
+
+<!-- LEARN -->
+<div class="card" id="s-learn" hidden>
+  <h2>Explore your wellness corner</h2>
+  <div class="grid">
+    <div class="tile"><div class="em">&#127800;</div><h4>PCOS, explained</h4>The basics, symptoms and how PCOS is evaluated.
+      <a href="https://www.who.int/news-room/fact-sheets/detail/polycystic-ovary-syndrome" target="_blank" rel="noopener">WHO fact sheet &rarr;</a>
+      <a href="https://www.womenshealth.gov/a-z-topics/polycystic-ovary-syndrome" target="_blank" rel="noopener">Office on Women's Health &rarr;</a></div>
+    <div class="tile"><div class="em">&#128197;</div><h4>Cycle care</h4>Understand your menstrual cycle.
+      <a href="https://www.womenshealth.gov/menstrual-cycle/your-menstrual-cycle" target="_blank" rel="noopener">Your menstrual cycle &rarr;</a></div>
+    <div class="tile"><div class="em">&#127807;</div><h4>Everyday wellness</h4>Hygiene and diet.
+      <a href="https://www.ankurahospitals.com/common-myths-and-facts-about-menstrual-health-and-hygiene-tips-expert-care-and-advice/" target="_blank" rel="noopener">Period hygiene tips &rarr;</a>
+      <a href="https://www.stgeorges.nhs.uk/wp-content/uploads/2025/12/DIE_PCOS_01.pdf" target="_blank" rel="noopener">Healthy eating and PCOS &rarr;</a></div>
+    <div class="tile"><div class="em">&#128221;</div><h4>Doctor's checklist</h4>Jot down questions for your appointment in your to-do list below.</div>
+  </div>
+  <div class="note todo"><b class="t">My little to-do list &#9825;</b>
+    <span style="font-size:.85rem">A private space just for you. It stays only in this browser.</span>
+    <ul id="todolist"></ul>
+    <div style="display:flex;gap:8px"><input type="text" id="todoin" placeholder="Add something..." maxlength="80"><button class="btn dark" onclick="addTodo()" style="padding:10px 16px">Add</button></div></div>
+  <div class="note"><b class="t">Did you know?</b>PCOS can affect people differently. Not everyone experiences the same combination of symptoms.</div>
+  <div id="disc2"></div>
+  <button class="btn alt" onclick="show('s-result')">&larr; Back to my result</button>
+  <p class="small">A little knowledge, a little kindness, a little more you &#9825;</p>
+</div>
+
+</div>
+
+<script>
+const OPT = (yes, no, ns) => [[yes, "Yes", 1], [no, "No", 0], ["I'm not quite sure", "Not sure", null]];
+const Q = [
+ {k:"age", t:"First, a little about you", q:"How old are you?", num:[10,60], ph:"Enter your age", lab:"Age", g:"About you", say:"Welcome! Take your time. \u2661"},
+ {k:"started", t:"First, a little about you", q:"Have you started menstruating?", opts:[["Yes","Yes",1],["No","No",0],["Not sure","Not sure",2]], skip:true, say:"This helps me read your answers in the right context."},
+ {k:"weight_kg", t:"A little about your body", q:"What is your weight (kg)?", num:[30,200], ph:"e.g. 55", lab:"Weight (kg)", g:"About you", say:"Only you will see this. Estimates are okay!"},
+ {k:"height_cm", t:"A little about your body", q:"What is your height (cm)?", num:[120,210], ph:"e.g. 160", lab:"Height (cm)", g:"About you", say:"Almost halfway there, you're doing great!"},
+ {k:"period_length_days", t:"A little cycle check-in", q:"How many days does your period usually last?", num:[0,20], ph:"e.g. 5 (enter 0 if you have no periods)", lab:"Period length (days)", g:"Menstrual health", say:"No worries if it varies, just give your best guess."},
+ {k:"regular_periods", t:"A little cycle check-in", q:"Are your periods usually regular?", opts:[["Yes, they're regular","Regular",1],["No, they're irregular","Irregular",0],["I'm not quite sure","Not sure",null]], ns:1, lab:"Cycle regularity", g:"Menstrual health", say:"Every body keeps its own rhythm. \u2661"},
+ {k:"weight_gain", t:"A little check on other changes", q:"Have you noticed recent weight gain?", opts:OPT("Yes, I've noticed this","No, not really"), lab:"Weight changes", g:"Other changes", say:"Little changes are worth paying attention to. Take your time! \u2661"},
+ {k:"excess_hair_growth", t:"A little skin & hair check-in", q:"Have you noticed excess hair growth on your face or body?", opts:OPT("Yes, I've noticed this","No, not really"), lab:"Excess hair growth", g:"Skin & hair", say:"There are no wrong answers here."},
+ {k:"skin_darkening", t:"A little skin & hair check-in", q:"Have you noticed darkened patches of skin (neck, underarms, groin)?", opts:OPT("Yes, I've noticed this","No, not really"), lab:"Darkened skin patches", g:"Other changes", say:"You're doing really well. \u2661"},
+ {k:"hair_loss", t:"A little skin & hair check-in", q:"Have you noticed hair thinning or hair loss?", opts:OPT("Yes, I've noticed this","No, not really"), lab:"Hair thinning", g:"Skin & hair", say:"Thank you for sharing. \u2661"},
+ {k:"pimples", t:"A little skin & hair check-in", q:"Have you noticed persistent or recurring acne?", opts:OPT("Yes, I've noticed this","No, not really"), lab:"Persistent acne", g:"Skin & hair", say:"Little changes are worth paying attention to. Take your time! \u2661"},
+ {k:"fast_food", t:"A little lifestyle check-in", q:"Do you eat fast food or junk food regularly?", opts:OPT("Yes, fairly often","No, not really"), lab:"Fast food", g:"Lifestyle", say:"No judgement here, just honest answers. \u2661"},
+ {k:"regular_exercise", t:"A little lifestyle check-in", q:"Do you exercise regularly?", opts:OPT("Yes, regularly","No, not really"), lab:"Regular exercise", g:"Lifestyle", say:"Last one! You did wonderfully. \u2661"}
+];
+const FIELDS = ["age","weight_kg","height_cm","period_length_days","regular_periods","weight_gain","excess_hair_growth","skin_darkening","hair_loss","pimples","fast_food","regular_exercise"];
+const LEVELS = {
+ Low:{cls:"low", tag:"01 \u00b7 Fewer indicators", h:"\u201cLooks like fewer red flags for now, girl! \u2661\u201d", p:"Your responses show fewer PCOS-associated indicators. Keep listening to your body, and remember that this screening cannot rule out PCOS."},
+ Moderate:{cls:"mid", tag:"02 \u00b7 Some indicators", h:"\u201cHey girl, let's pay a little attention! \u2661\u201d", p:"Some of your responses are associated with PCOS. Nothing to jump to conclusions about, but worth discussing with a healthcare professional."},
+ High:{cls:"high", tag:"03 \u00b7 Multiple indicators", h:"\u201cGirl, let's give your health some extra love! \u2661\u201d", p:"You've reported multiple PCOS-associated symptoms. This isn't a diagnosis, but we'd encourage you to get a professional evaluation."}
+};
+const DISC = `<div class="disc"><div class="eyebrow" style="margin-bottom:8px">Your little wellness space &#9825;</div>
+ <div class="head"><img src="/static/rosie.png" alt="" onerror="this.style.visibility='hidden'"><div><b>A little health reminder &#9825;</b><br><span style="color:var(--mauve)">"No two bodies are exactly alike. Let's understand yours!"</span></div></div>
+ <div class="in"><b>A little note about your results</b><p>This tool is designed for preliminary symptom-based screening and health awareness only. It is <b>NOT</b> a diagnostic tool and cannot confirm or rule out Polycystic Ovary Syndrome (PCOS).</p>
+ <p>Your result is based only on the information you provided and should not replace professional medical evaluation.</p>
+ <p><strong>Your health is unique. For medical advice, please consult a qualified healthcare professional.</strong></p></div>
+ <p class="small">&#9825; You're doing great, one step at a time! &#9825;</p></div>`;
+
+let step = 0, ans = {};
+const $ = id => document.getElementById(id);
+
+function show(id) {
+  ["s-welcome","s-ask","s-result","s-journal","s-learn"].forEach(s => $(s).hidden = (s !== id));
+  window.scrollTo(0, 0);
+}
+function startQuiz() { step = 0; ans = {}; $("disc1").innerHTML = DISC; $("disc2").innerHTML = DISC; show("s-ask"); render(); }
+
+function render() {
+  const q = Q[step];
+  $("count").textContent = String(step + 1).padStart(2, "0") + " / " + Q.length;
+  $("fill").style.width = ((step + 1) / Q.length * 100) + "%";
+  $("qtitle").textContent = q.t;
+  $("say").textContent = "Rosie: \u201c" + q.say + "\u201d";
+  $("err").textContent = "";
+  $("nextbtn").innerHTML = step === Q.length - 1 ? "See my result &rarr;" : "Next &rarr;";
+  const body = $("qbody");
+  body.innerHTML = "";
+  const h = document.createElement("p");
+  h.style.cssText = "font-weight:600;font-size:1.1rem;margin:0 0 10px";
+  h.textContent = q.q;
+  body.appendChild(h);
+  if (q.num) {
+    const inp = document.createElement("input");
+    inp.type = "number"; inp.id = "numin"; inp.placeholder = q.ph; inp.min = q.num[0]; inp.max = q.num[1]; inp.step = "any";
+    if (ans[q.k] !== undefined) inp.value = ans[q.k].val;
+    body.appendChild(inp);
+  } else {
+    q.opts.forEach((o, i) => {
+      const d = document.createElement("div");
+      d.className = "opt" + (ans[q.k] && ans[q.k].i === i ? " on" : "");
+      d.innerHTML = "<span></span>";
+      d.appendChild(document.createTextNode(o[0]));
+      d.onclick = () => { ans[q.k] = {i: i, val: o[2], short: o[1]}; render(); };
+      body.appendChild(d);
+    });
+  }
+}
+
+function prev() { if (step > 0) { step--; render(); } else show("s-welcome"); }
+
+function next() {
+  const q = Q[step];
+  if (q.num) {
+    const v = parseFloat($("numin").value);
+    if (isNaN(v) || v < q.num[0] || v > q.num[1]) { $("err").textContent = "Please enter a number between " + q.num[0] + " and " + q.num[1] + "."; return; }
+    ans[q.k] = {val: v, short: String(v)};
+  } else if (!ans[q.k]) { $("err").textContent = "Please choose one option to continue."; return; }
+  if (q.skip && ans[q.k].val === 0) { notStarted(); return; }
+  if (step < Q.length - 1) { step++; render(); } else submit();
+}
+
+function notStarted() {
+  $("resbox").innerHTML = '<h2>Thank you for stopping by &#9825;</h2><p>This check-in is designed for people who have started menstruating, so the questions would not give you a meaningful result yet. If you have any worries about your body, a trusted adult or healthcare professional is the best person to talk to.</p>';
+  $("s-result").querySelectorAll(".btn").forEach(b => b.hidden = true);
+  show("s-result");
+}
+
+async function submit() {
+  const payload = {};
+  FIELDS.forEach(k => {
+    const a = ans[k], q = Q.find(x => x.k === k);
+    payload[k] = (a.val === null) ? (q.ns !== undefined ? q.ns : 0) : a.val;
+  });
+  $("s-result").querySelectorAll(".btn").forEach(b => b.hidden = false);
+  $("resbox").innerHTML = "<p>Rosie is thinking it over... &#9825;</p>";
+  show("s-result");
+  try {
+    const r = await fetch("/predict", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload)});
+    const d = await r.json();
+    if (!r.ok) { $("resbox").innerHTML = "<p>Hmm, something in your answers didn't look right: " + (d.errors || [d.error]).join("; ") + "</p>"; return; }
+    const L = LEVELS[d.level] || LEVELS.Moderate;
+    const unsure = Object.values(ans).filter(a => a.val === null).length;
+    $("resbox").innerHTML = '<div class="' + L.cls + '"><span class="tag">' + L.tag + '</span><h2>' + L.h + '</h2><p>' + L.p + '</p>' +
+      (unsure ? '<p class="small" style="text-align:left">You chose "not sure" for ' + unsure + ' question(s). We counted those as "no".</p>' : "") + '</div>';
+    buildJournal();
+  } catch (e) {
+    $("resbox").innerHTML = "<p>I couldn't reach the screening service. Please check that the app is running and try again.</p>";
+  }
+}
+
+function buildJournal() {
+  const groups = {};
+  Q.forEach(q => { if (q.g && ans[q.k]) { (groups[q.g] = groups[q.g] || []).push([q.lab, ans[q.k].short]); } });
+  const order = ["Menstrual health", "Skin & hair", "Other changes", "Lifestyle", "About you"];
+  $("jbody").innerHTML = order.filter(g => groups[g]).map(g =>
+    '<div class="grp"><h3>' + g.replace("&", "&amp;") + '</h3>' + groups[g].map(r => '<div class="row"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>').join("") + '</div>').join("");
+}
+
+/* personal to-do list (kept in this browser only) */
+function loadTodo() { try { return JSON.parse(localStorage.getItem("pcos_todo") || "[]"); } catch (e) { return []; } }
+function saveTodo(t) { try { localStorage.setItem("pcos_todo", JSON.stringify(t)); } catch (e) {} }
+function drawTodo() {
+  const t = loadTodo(), ul = $("todolist");
+  ul.innerHTML = "";
+  t.forEach((item, i) => {
+    const li = document.createElement("li");
+    li.className = item.done ? "done" : "";
+    const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = item.done;
+    cb.onchange = () => { t[i].done = cb.checked; saveTodo(t); drawTodo(); };
+    const sp = document.createElement("span"); sp.textContent = item.text;
+    const x = document.createElement("button"); x.textContent = "\u2715"; x.onclick = () => { t.splice(i, 1); saveTodo(t); drawTodo(); };
+    li.append(cb, sp, x); ul.appendChild(li);
+  });
+}
+function addTodo() {
+  const v = $("todoin").value.trim();
+  if (!v) return;
+  const t = loadTodo(); t.push({text: v, done: false}); saveTodo(t); $("todoin").value = ""; drawTodo();
+}
+drawTodo();
+</script>
+</body>
+</html>
