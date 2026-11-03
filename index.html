@@ -54,6 +54,10 @@ input[type=number], input[type=text] { width:100%; font-size:1.05rem; padding:13
 .disc .in { background:#fff; border-radius:16px; padding:14px; font-size:.93rem; }
 .disc strong { color:var(--mauve); }
 .link { background:none; border:0; color:var(--mauve); text-decoration:underline; cursor:pointer; font-size:.9rem; margin-top:10px; }
+.fig { width:100%; border:1px solid var(--line); border-radius:14px; margin:8px 0; background:#fff; }
+.chart { margin:18px 0; } .chart h3 { margin:0 0 4px; color:var(--mauve); font-size:1.05rem; }
+.mean { background:var(--soft); border-radius:14px; padding:12px 14px; font-size:.93rem; color:#4a3a45; }
+.mean b { color:var(--mauve); }
 [hidden] { display:none !important; }
 </style>
 </head>
@@ -68,6 +72,7 @@ input[type=number], input[type=text] { width:100%; font-size:1.05rem; padding:13
   <div class="rosie"><img src="/static/rosie.png" alt="Rosie" onerror="this.style.visibility='hidden'">
     <div><b>Hey, lovely! I'm Rosie &#9825;</b>"I'll be your little companion while we learn more about your health. Ready to begin?"</div></div>
   <button class="btn" onclick="startQuiz()">Start your little check-in &#9825;</button>
+  <button class="btn alt" onclick="show('s-eda')">See what our data says (EDA)</button>
   <p class="small">A gentle step towards understanding your body.</p>
 </div>
 
@@ -122,8 +127,26 @@ input[type=number], input[type=text] { width:100%; font-size:1.05rem; padding:13
     <div style="display:flex;gap:8px"><input type="text" id="todoin" placeholder="Add something..." maxlength="80"><button class="btn dark" onclick="addTodo()" style="padding:10px 16px">Add</button></div></div>
   <div class="note"><b class="t">Did you know?</b>PCOS can affect people differently. Not everyone experiences the same combination of symptoms.</div>
   <div id="disc2"></div>
+  <button class="btn alt" onclick="show('s-eda')">See what our data says (EDA)</button>
   <button class="btn alt" onclick="show('s-result')">&larr; Back to my result</button>
   <p class="small">A little knowledge, a little kindness, a little more you &#9825;</p>
+</div>
+
+<!-- EDA -->
+<div class="card" id="s-eda" hidden>
+  <div class="eyebrow">How we built this</div>
+  <h2>What our data says</h2>
+  <p><b>EDA (Exploratory Data Analysis)</b> means looking at the data with charts and simple numbers <i>before</i> building the model, like studying the ingredients before cooking. We used 999 people from two survey datasets (277 with PCOS, 722 without). Here is what we found, chart by chart.</p>
+  <div class="chart"><h3>1. How many people have PCOS?</h3><img class="fig" src="/static/eda_1_class_balance.png" alt="How many people have PCOS?"><div class="mean"><b>What this means:</b> Only 28 percent of our people have PCOS. A lazy guess of &ldquo;no PCOS&rdquo; for everyone would be right 72 percent of the time but would find nobody. So accuracy alone is not enough, and we also check how many real PCOS cases the model catches (recall).</div></div>
+  <div class="chart"><h3>2. Which signs go with PCOS?</h3><img class="fig" src="/static/eda_2_symptom_rate.png" alt="Which signs go with PCOS?"><div class="mean"><b>What this means:</b> Irregular periods stand out: 64 percent of people with irregular periods have PCOS, against 16 percent with regular periods. Extra hair growth (57 vs 17 percent), dark skin patches (51 vs 17) and weight gain (44 vs 16) also raise the chance a lot. Hair loss matters less, and exercise hardly changes anything.</div></div>
+  <div class="chart"><h3>3. More signs, higher chance</h3><img class="fig" src="/static/eda_3_symptom_count.png" alt="More signs, higher chance"><div class="mean"><b>What this means:</b> With none of five signs (weight gain, hair growth, skin darkening, hair loss, pimples) only about 7 percent have PCOS. With three it is about 45 percent, and with all five about 73 percent. No single sign proves PCOS, but the signs add up, which is why the model weighs them together.</div></div>
+  <div class="chart"><h3>4. Body measurements: PCOS vs no PCOS</h3><img class="fig" src="/static/eda_4_boxplots.png" alt="Body measurements: PCOS vs no PCOS"><div class="mean"><b>What this means:</b> Each box shows the middle half of the people. Weight and BMI sit a little higher in the PCOS group (median BMI 25.1 vs 23.1). Age (median 28) and period length (median 5 days) look almost the same in both groups, so they are weak clues on their own.</div></div>
+  <div class="chart"><h3>5. How BMI and age are spread out</h3><img class="fig" src="/static/eda_5_histograms.png" alt="How BMI and age are spread out"><div class="mean"><b>What this means:</b> The PCOS curve for BMI is shifted slightly to the right (average 25.3 vs 23.4) but the two curves overlap a lot, so BMI alone cannot tell the groups apart. Most people in our data are young: the median age is 28.</div></div>
+  <div class="chart"><h3>6. What is most linked to PCOS?</h3><img class="fig" src="/static/eda_6_correlation_bars.png" alt="What is most linked to PCOS?"><div class="mean"><b>What this means:</b> Correlation is a number from -1 to +1 showing whether two things move together. Regular periods has the strongest link (-0.46, negative because regular periods go with <i>less</i> PCOS), followed by extra hair growth (0.40), dark skin patches (0.36) and weight gain (0.31). Age, height and exercise are close to zero.</div></div>
+  <div class="chart"><h3>7. Correlation heatmap (everything vs everything)</h3><img class="fig" src="/static/eda_7_heatmap.png" alt="Correlation heatmap (everything vs everything)"><div class="mean"><b>What this means:</b> Red squares mean two columns rise together and blue means one rises as the other falls. Weight and BMI are almost the same information (0.89). The symptoms are only mildly linked to each other (about 0.2 to 0.3), so each one adds something new.</div></div>
+  <div class="note"><b class="t">What we learned and how it shaped the model</b>
+    No single sign decides PCOS, so we used a model that combines all the signs. Because PCOS is the smaller group, we gave those cases more weight while training. A link in the data does not prove a cause: for example, our data cannot show that fast food causes PCOS. These results describe our dataset only and are not medical advice.</div>
+  <button class="btn alt" onclick="show(last)">&larr; Back</button>
 </div>
 
 </div>
@@ -161,8 +184,12 @@ const DISC = `<div class="disc"><div class="eyebrow" style="margin-bottom:8px">Y
 let step = 0, ans = {};
 const $ = id => document.getElementById(id);
 
+let last = "s-welcome";
 function show(id) {
-  ["s-welcome","s-ask","s-result","s-journal","s-learn"].forEach(s => $(s).hidden = (s !== id));
+  const ids = ["s-welcome","s-ask","s-result","s-journal","s-learn","s-eda"];
+  const cur = ids.find(s => !$(s).hidden);
+  if (id === "s-eda" && cur) last = cur;
+  ids.forEach(s => $(s).hidden = (s !== id));
   window.scrollTo(0, 0);
 }
 function startQuiz() { step = 0; ans = {}; $("disc1").innerHTML = DISC; $("disc2").innerHTML = DISC; show("s-ask"); render(); }
