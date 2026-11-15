@@ -119,12 +119,16 @@ input[type=number], input[type=text] { width:100%; font-size:1.05rem; padding:13
     <div class="tile"><div class="em">&#127807;</div><h4>Everyday wellness</h4>Hygiene and diet.
       <a href="https://www.ankurahospitals.com/common-myths-and-facts-about-menstrual-health-and-hygiene-tips-expert-care-and-advice/" target="_blank" rel="noopener">Period hygiene tips &rarr;</a>
       <a href="https://www.stgeorges.nhs.uk/wp-content/uploads/2025/12/DIE_PCOS_01.pdf" target="_blank" rel="noopener">Healthy eating and PCOS &rarr;</a></div>
-    <div class="tile"><div class="em">&#128221;</div><h4>Doctor's checklist</h4>Jot down questions for your appointment in your to-do list below.</div>
+    <div class="tile"><div class="em">&#128221;</div><h4>Doctor's checklist</h4>Things to bring and questions to ask at your appointment.
+      <a href="#docs">Open the checklist &darr;</a></div>
   </div>
   <div class="note todo"><b class="t">My little to-do list &#9825;</b>
     <span style="font-size:.85rem">A private space just for you. It stays only in this browser.</span>
     <ul id="todolist"></ul>
     <div style="display:flex;gap:8px"><input type="text" id="todoin" placeholder="Add something..." maxlength="80"><button class="btn dark" onclick="addTodo()" style="padding:10px 16px">Add</button></div></div>
+  <div class="note todo" id="docs"><b class="t">My doctor's checklist &#9825;</b>
+    <span style="font-size:.85rem">Tick things off as you prepare. Your ticks stay only in this browser.</span>
+    <div id="doclist"></div></div>
   <div class="note"><b class="t">Did you know?</b>PCOS can affect people differently. Not everyone experiences the same combination of symptoms.</div>
   <div id="disc2"></div>
   <button class="btn alt" onclick="show('s-eda')">See what our data says (EDA)</button>
@@ -213,6 +217,7 @@ function render() {
     inp.type = "number"; inp.id = "numin"; inp.placeholder = q.ph; inp.min = q.num[0]; inp.max = q.num[1]; inp.step = "any";
     if (ans[q.k] !== undefined) inp.value = ans[q.k].val;
     body.appendChild(inp);
+    inp.focus();
   } else {
     q.opts.forEach((o, i) => {
       const d = document.createElement("div");
@@ -296,6 +301,37 @@ function addTodo() {
   if (!v) return;
   const t = loadTodo(); t.push({text: v, done: false}); saveTodo(t); $("todoin").value = ""; drawTodo();
 }
+/* doctor's checklist */
+const DOC = [
+ ["Bring with you", ["Dates of my last few periods and how long they lasted", "A list of my symptoms and when I first noticed them", "Medicines or supplements I take", "Family history (PCOS, diabetes, high blood pressure)", "Any earlier test reports or scans", "My result and symptom overview from this app"]],
+ ["Questions to ask", ["Could my symptoms be PCOS, or something else?", "Which tests are right for me (for example blood tests or an ultrasound)?", "What lifestyle changes could help (food, movement, sleep, stress)?", "What treatment options are there, and what are the side effects?", "Are there other health checks I should have?", "When should I come back for a follow-up?"]]
+];
+function drawDocs() {
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem("pcos_doc") || "{}"); } catch (e) {}
+  const box = $("doclist"); box.innerHTML = "";
+  DOC.forEach((grp, gi) => {
+    const h = document.createElement("div"); h.style.cssText = "font-weight:600;margin:10px 0 2px"; h.textContent = grp[0]; box.appendChild(h);
+    const ul = document.createElement("ul"); ul.style.cssText = "padding:0;margin:4px 0";
+    grp[1].forEach((txt, i) => {
+      const key = gi + "_" + i, li = document.createElement("li");
+      li.style.cssText = "display:flex;gap:8px;align-items:flex-start;list-style:none;padding:4px 0";
+      const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = !!saved[key]; cb.style.marginTop = "4px";
+      const sp = document.createElement("span"); sp.textContent = txt; if (cb.checked) sp.style.textDecoration = "line-through";
+      cb.onchange = () => { saved[key] = cb.checked; sp.style.textDecoration = cb.checked ? "line-through" : "none"; try { localStorage.setItem("pcos_doc", JSON.stringify(saved)); } catch (e) {} };
+      li.append(cb, sp); ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  });
+}
+drawDocs();
+
+/* Enter key: next question, or add a to-do item */
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter" || e.target.tagName === "BUTTON") return;
+  if (!$("s-ask").hidden) { e.preventDefault(); next(); }
+  else if (e.target === $("todoin")) { e.preventDefault(); addTodo(); }
+});
 drawTodo();
 </script>
 </body>
