@@ -141,6 +141,7 @@ input[type=number], input[type=text] { width:100%; font-size:1.05rem; padding:13
   <div class="eyebrow">How we built this</div>
   <h2>What our data says</h2>
   <p><b>EDA (Exploratory Data Analysis)</b> means looking at the data with charts and simple numbers <i>before</i> building the model, like studying the ingredients before cooking. We used 999 people from two survey datasets (277 with PCOS, 722 without). Here is what we found, chart by chart.</p>
+  <a class="btn alt colablink" target="_blank" rel="noopener" hidden style="text-align:center;text-decoration:none">Open the full EDA notebook in Google Colab &rarr;</a>
   <div class="chart"><h3>1. How many people have PCOS?</h3><img class="fig" src="/static/eda_1_class_balance.png" alt="How many people have PCOS?"><div class="mean"><b>What this means:</b> Only 28 percent of our people have PCOS. A lazy guess of &ldquo;no PCOS&rdquo; for everyone would be right 72 percent of the time but would find nobody. So accuracy alone is not enough, and we also check how many real PCOS cases the model catches (recall).</div></div>
   <div class="chart"><h3>2. Which signs go with PCOS?</h3><img class="fig" src="/static/eda_2_symptom_rate.png" alt="Which signs go with PCOS?"><div class="mean"><b>What this means:</b> Irregular periods stand out: 64 percent of people with irregular periods have PCOS, against 16 percent with regular periods. Extra hair growth (57 vs 17 percent), dark skin patches (51 vs 17) and weight gain (44 vs 16) also raise the chance a lot. Hair loss matters less, and exercise hardly changes anything.</div></div>
   <div class="chart"><h3>3. More signs, higher chance</h3><img class="fig" src="/static/eda_3_symptom_count.png" alt="More signs, higher chance"><div class="mean"><b>What this means:</b> With none of five signs (weight gain, hair growth, skin darkening, hair loss, pimples) only about 7 percent have PCOS. With three it is about 45 percent, and with all five about 73 percent. No single sign proves PCOS, but the signs add up, which is why the model weighs them together.</div></div>
@@ -150,6 +151,7 @@ input[type=number], input[type=text] { width:100%; font-size:1.05rem; padding:13
   <div class="chart"><h3>7. Correlation heatmap (everything vs everything)</h3><img class="fig" src="/static/eda_7_heatmap.png" alt="Correlation heatmap (everything vs everything)"><div class="mean"><b>What this means:</b> Red squares mean two columns rise together and blue means one rises as the other falls. Weight and BMI are almost the same information (0.89). The symptoms are only mildly linked to each other (about 0.2 to 0.3), so each one adds something new.</div></div>
   <div class="note"><b class="t">What we learned and how it shaped the model</b>
     No single sign decides PCOS, so we used a model that combines all the signs. Because PCOS is the smaller group, we gave those cases more weight while training. A link in the data does not prove a cause: for example, our data cannot show that fast food causes PCOS. These results describe our dataset only and are not medical advice.</div>
+  <a class="btn alt colablink" target="_blank" rel="noopener" hidden style="text-align:center;text-decoration:none">Open the full EDA notebook in Google Colab &rarr;</a>
   <button class="btn alt" onclick="show(last)">&larr; Back</button>
 </div>
 
@@ -185,6 +187,9 @@ const DISC = `<div class="disc"><div class="eyebrow" style="margin-bottom:8px">Y
  <p><strong>Your health is unique. For medical advice, please consult a qualified healthcare professional.</strong></p></div>
  <p class="small">&#9825; You're doing great, one step at a time! &#9825;</p></div>`;
 
+/* Paste your shared Google Colab link between the quotes, for example "https://colab.research.google.com/drive/..." */
+const COLAB_URL = "https://colab.research.google.com/drive/122GK2iGiXJFy2LZ_1HziRklLjMJh-LkR";
+document.querySelectorAll(".colablink").forEach(a => { if (COLAB_URL) { a.href = COLAB_URL; a.hidden = false; } });
 let step = 0, ans = {};
 const $ = id => document.getElementById(id);
 
